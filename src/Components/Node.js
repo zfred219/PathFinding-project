@@ -1,8 +1,8 @@
 import React from "react"
 import "./Node.css"
 
-const Node = ({ isStart, isEnd, row, col, isWall }) => {
-    const classes = isStart ? "node-start" : isWall ? "is-wall" : isEnd ? "node-end" : "";
+const Node = (props) => {
+    const classes = props.isStart ? "node-start" : props.isWall ? "is-wall" : props.isEnd ? "node-end" : "";
     return (
         <div className = {`node ${classes}`} id={`node-${row}-${col}`}></div>
     )

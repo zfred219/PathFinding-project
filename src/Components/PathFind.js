@@ -18,6 +18,7 @@ const Pathfind = () => {
     const [VisitedNodes, setVisitedNodes] = useState([]);
 
     const initilizeGrid = () => {
+        
         const grid = new Array(rows);
         for (let i = 0; i < rows; i++) {
             grid[i] = new Array(cols);
@@ -26,13 +27,16 @@ const Pathfind = () => {
         createGrid(grid);
         setGrid(grid);
         addNeighbours(grid);
-        const startNode = grid[NODE_START_ROW][NODE_START_COL];
-        const endNode = grid[NODE_END_ROW][NODE_END_COL];
-        let path = Astar(startNode, endNode);
+        calculatePath(grid);
 
-        //diplay
-        setPath(path.path);
-        setVisitedNodes(path.visitedNodes);
+        // const startNode = grid[NODE_START_ROW][NODE_START_COL];
+        // const endNode = grid[NODE_END_ROW][NODE_END_COL];
+        // let path = Astar(startNode, endNode);
+        // //diplay
+        // setPath(path.path);
+        // setVisitedNodes(path.visitedNodes);
+
+ 
     };
 
     // Call first
@@ -67,15 +71,11 @@ const Pathfind = () => {
         this.y = j;
         this.isStart = this.x === NODE_START_ROW && this.y === NODE_START_COL;
         this.isEnd = this.x === NODE_END_ROW && this.y === NODE_END_COL;
-        //console.log(i , j, NODE_END_ROW, NODE_END_COL, this.isEnd)
-        
-    
         this.g = 0;
         this.f = 0;
         this.h = 0;
         this.neighbours = [];
-        (Math.random(1) < 0.2 && !this.isStart && !this.isEnd) ? this.isWall = true : this.isWall = false;
-
+        this.isWall = false;
         this.previous = undefined;
         this.addNeighbours = (grid) => {
             let i = this.x;
@@ -87,6 +87,14 @@ const Pathfind = () => {
         };
     }
 
+    const calculatePath = (grid) => {
+        const startNode = grid[NODE_START_ROW][NODE_START_COL];
+        const endNode = grid[NODE_END_ROW][NODE_END_COL];
+        let AlgorithmPath = Astar(startNode, endNode);
+        //diplay
+        setPath(AlgorithmPath.path);
+        setVisitedNodes(AlgorithmPath.visitedNodes);
+    }
 
     // Grid with node
     const gridWithNode = (
@@ -110,34 +118,71 @@ const Pathfind = () => {
     )
 
     const visualizePath = () => {
-        for (let i = 0; i <= VisitedNodes.length; i++) {
+        
+        //document.getElementById("v-btn").disabled = true;
+        for (let i = 1; i <= VisitedNodes.length; i++) {
             if (i === VisitedNodes.length) {
                 setTimeout(() => {
                     visualizeShortestPath(Path);
                  }, 20 * i);
             } else {
                 setTimeout(() => {
-                    const node = VisitedNodes[i];
-                document.getElementById(`node-${node.x}-${node.y}`).className = "node node-visited";
+                const node = VisitedNodes[i];
+                if (!node.isEnd) document.getElementById(`node-${node.x}-${node.y}`).className = "node node-visited";
                  }, 20 * i);
             }
         }
+        
     }
 
     const visualizeShortestPath = (shortestPathNodes) => {
-        for (let i = 0; i < shortestPathNodes.length; i++) {
+        for (let i = 1; i < shortestPathNodes.length - 1; i++) {
             setTimeout(() => {
                 const node = shortestPathNodes[i];
                 document.getElementById(`node-${node.x}-${node.y}`).className = "node node-shortest-path";
             }, 10 * i);
         }
+        
+    }
+
+    const resetPath = () => {
+        for (let i = 0; i < VisitedNodes.length; i++) {
+            const node = VisitedNodes[i];
+            const elem = document.getElementById(`node-${node.x}-${node.y}`);
+            elem.classList.remove("node-shortest-path");
+            elem.classList.remove("node-visited");
+        }
+        initilizeGrid();
+    }
+
+    //Better Approach?
+    const generateRandomWalls = () => {
+        for (let r = 0; r < Grid.length; r++) {
+            for (let c = 0; c < Grid[0].length; c++) {
+                
+                let currSpot = Grid[r][c];
+                currSpot.isWall = false;
+                currSpot.isWall = (Math.random(1) < 0.2 && !currSpot.isStart && !currSpot.isEnd) ? true : false;
+                const elem = document.getElementById(`node-${r}-${c}`)
+                elem.classList.remove("node-shortest-path");
+                elem.classList.remove("node-visited");
+                if (currSpot.isWall) {
+                    elem.classList.add("is-wall")
+                } else {
+                    elem.classList.remove("is-wall")
+                }
+            }
+        }      
+        calculatePath(Grid)
     }
     
     return (
         <div className="Wrapper">
             <h1>PathFind Visualization</h1>
             <br></br>
-            <button onClick={visualizePath}>Visualize Path</button>
+            <button id="v-btn" onClick={visualizePath}>Visualize Path</button>
+            <button onClick={resetPath}>Reset</button>
+            <button onClick={generateRandomWalls}>Generate Walls</button>
             {gridWithNode}
         </div>
     )
