@@ -16,6 +16,7 @@ const Pathfind = () => {
     const [Grid, setGrid] = useState([]);
     const [Path, setPath] = useState([]);
     const [VisitedNodes, setVisitedNodes] = useState([]);
+    //const [Algorithm, setAlgorithm] = useState([]);
 
     const initilizeGrid = () => {
         
@@ -28,6 +29,7 @@ const Pathfind = () => {
         setGrid(grid);
         addNeighbours(grid);
         calculatePath(grid);
+        
 
         // const startNode = grid[NODE_START_ROW][NODE_START_COL];
         // const endNode = grid[NODE_END_ROW][NODE_END_COL];
@@ -38,6 +40,25 @@ const Pathfind = () => {
 
  
     };
+
+
+
+    const mouseDownHandler = (row, col) => {
+        mouseDownWallToggle(Grid, row, col);
+    }
+
+    const mouseDownWallToggle = (grid, row, col) => {
+        const newGrid = grid.slice();
+        const spot = newGrid[row][col];
+        const newSpot = {
+          ...spot, // spreading all other props of this spot
+          isWall: !spot.isWall,
+        };
+        newGrid[row][col] = newSpot;
+        calculatePath(newGrid)
+        setGrid(newGrid);
+      };
+    
 
     // Call first
     useEffect(() => {
@@ -66,11 +87,11 @@ const Pathfind = () => {
     
     //Spot constructor
     function Spot(i, j) {
-        
         this.x = i;
         this.y = j;
         this.isStart = this.x === NODE_START_ROW && this.y === NODE_START_COL;
         this.isEnd = this.x === NODE_END_ROW && this.y === NODE_END_COL;
+        // For A*
         this.g = 0;
         this.f = 0;
         this.h = 0;
@@ -86,14 +107,17 @@ const Pathfind = () => {
             if (j<cols-1) this.neighbours.push(grid[i][j+1]);
         };
     }
+    
 
+    //TODO: add algorithm here
+    /* Calculate path based on currently selected algorithm */
     const calculatePath = (grid) => {
         const startNode = grid[NODE_START_ROW][NODE_START_COL];
         const endNode = grid[NODE_END_ROW][NODE_END_COL];
         let AlgorithmPath = Astar(startNode, endNode);
-        //diplay
         setPath(AlgorithmPath.path);
         setVisitedNodes(AlgorithmPath.visitedNodes);
+        return AlgorithmPath
     }
 
     // Grid with node
@@ -108,7 +132,8 @@ const Pathfind = () => {
                                 <Node 
                                 key={colIndex} isStart={isStart}
                                 isEnd={isEnd} row={rowIndex}
-                                col={colIndex} isWall={isWall}/>
+                                col={colIndex} isWall={isWall}
+                                mouseDown={(r, c) => mouseDownHandler(r, c)}/>
                             )
                         })}
                     </div>
@@ -117,8 +142,49 @@ const Pathfind = () => {
         </div>
     )
 
-    const visualizePath = () => {
-        
+
+    /* Use a trick to clear all unfinishing setTimeOut (Reset during animation) */
+    const resetTimeOuthandler = () => {
+        // Set a fake timeout to get the highest timeout id
+        var highestTimeoutId = setTimeout(1);
+        for (var i = 0 ; i < highestTimeoutId ; i++) {
+            clearTimeout(i); 
+        }
+    }
+
+    /* Reset the grid to original state */
+    const resetPath = () => {
+        resetTimeOuthandler();
+        for (let i = 0; i < VisitedNodes.length; i++) {
+            const node = VisitedNodes[i];
+            const elem = document.getElementById(`node-${node.x}-${node.y}`);
+            elem.classList.remove("node-shortest-path");
+            elem.classList.remove("node-visited");
+        }
+        initilizeGrid();
+    }
+
+    //TODO: Better Approach?
+    const generateRandomWalls = () => {
+        for (let r = 0; r < Grid.length; r++) {
+            for (let c = 0; c < Grid[0].length; c++) {
+                let currSpot = Grid[r][c];
+                currSpot.isWall = false;
+                currSpot.isWall = (Math.random(1) < 0.2 && !currSpot.isStart && !currSpot.isEnd) ? true : false;
+                const elem = document.getElementById(`node-${r}-${c}`)
+                elem.classList.remove("node-shortest-path");
+                elem.classList.remove("node-visited");
+                if (currSpot.isWall) {
+                    elem.classList.add("is-wall")
+                } else {
+                    elem.classList.remove("is-wall")
+                }
+            }
+        }      
+        calculatePath(Grid)
+    }
+
+    const visualizePathHandler = () => {
         //document.getElementById("v-btn").disabled = true;
         for (let i = 1; i <= VisitedNodes.length; i++) {
             if (i === VisitedNodes.length) {
@@ -145,42 +211,12 @@ const Pathfind = () => {
         
     }
 
-    const resetPath = () => {
-        for (let i = 0; i < VisitedNodes.length; i++) {
-            const node = VisitedNodes[i];
-            const elem = document.getElementById(`node-${node.x}-${node.y}`);
-            elem.classList.remove("node-shortest-path");
-            elem.classList.remove("node-visited");
-        }
-        initilizeGrid();
-    }
 
-    //Better Approach?
-    const generateRandomWalls = () => {
-        for (let r = 0; r < Grid.length; r++) {
-            for (let c = 0; c < Grid[0].length; c++) {
-                
-                let currSpot = Grid[r][c];
-                currSpot.isWall = false;
-                currSpot.isWall = (Math.random(1) < 0.2 && !currSpot.isStart && !currSpot.isEnd) ? true : false;
-                const elem = document.getElementById(`node-${r}-${c}`)
-                elem.classList.remove("node-shortest-path");
-                elem.classList.remove("node-visited");
-                if (currSpot.isWall) {
-                    elem.classList.add("is-wall")
-                } else {
-                    elem.classList.remove("is-wall")
-                }
-            }
-        }      
-        calculatePath(Grid)
-    }
-    
     return (
         <div className="Wrapper">
             <h1>PathFind Visualization</h1>
             <br></br>
-            <button id="v-btn" onClick={visualizePath}>Visualize Path</button>
+            <button id="v-btn" onClick={visualizePathHandler}>Visualize Path</button>
             <button onClick={resetPath}>Reset</button>
             <button onClick={generateRandomWalls}>Generate Walls</button>
             {gridWithNode}
