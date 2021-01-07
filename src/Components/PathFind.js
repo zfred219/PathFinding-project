@@ -3,8 +3,8 @@ import Node from "./Node"
 import Astar from "../Algorithms/AStar"
 import "./PathFind.css"
 
-const cols = 15;
-const rows = 12;
+const cols = 30;
+const rows = 20;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -16,6 +16,7 @@ const Pathfind = () => {
     const [Grid, setGrid] = useState([]);
     const [Path, setPath] = useState([]);
     const [VisitedNodes, setVisitedNodes] = useState([]);
+    const [MouseDown, setMouseDown] = useState(false);
     //const [Algorithm, setAlgorithm] = useState([]);
 
     const initilizeGrid = () => {
@@ -45,7 +46,17 @@ const Pathfind = () => {
 
     const mouseDownHandler = (row, col) => {
         mouseDownWallToggle(Grid, row, col);
-    }
+        setMouseDown(true)
+    };
+
+    const mouseEnterHandler = (row, col) => {
+        if (MouseDown) mouseDownWallToggle(Grid, row, col);
+    };
+
+    const mouseUpHandler = (row, col) => {
+        setMouseDown(false);
+    };
+
 
     const mouseDownWallToggle = (grid, row, col) => {
         const newGrid = grid.slice();
@@ -57,7 +68,9 @@ const Pathfind = () => {
         newGrid[row][col] = newSpot;
         calculatePath(newGrid)
         setGrid(newGrid);
-      };
+    };
+
+   
     
 
     // Call first
@@ -133,7 +146,10 @@ const Pathfind = () => {
                                 key={colIndex} isStart={isStart}
                                 isEnd={isEnd} row={rowIndex}
                                 col={colIndex} isWall={isWall}
-                                mouseDown={(r, c) => mouseDownHandler(r, c)}/>
+                                mouseDown={(r, c) => mouseDownHandler(r, c)}
+                                mouseEnter={(r, c) => mouseEnterHandler(r, c)}
+                                mouseUp={(r, c) => mouseUpHandler(r, c)}
+                                />
                             )
                         })}
                     </div>
@@ -216,10 +232,14 @@ const Pathfind = () => {
         <div className="Wrapper">
             <h1>PathFind Visualization</h1>
             <br></br>
-            <button id="v-btn" onClick={visualizePathHandler}>Visualize Path</button>
-            <button onClick={resetPath}>Reset</button>
-            <button onClick={generateRandomWalls}>Generate Walls</button>
-            {gridWithNode}
+            <div>
+                <button id="v-btn" onClick={visualizePathHandler}>Visualize Path</button>
+                <button onClick={resetPath}>Reset</button>
+                <button onClick={generateRandomWalls}>Generate Walls</button>
+            </div>
+            <div className="grid">
+                {gridWithNode}
+            </div>
         </div>
     )
 }
