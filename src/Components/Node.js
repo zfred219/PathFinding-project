@@ -15,4 +15,4 @@ const Node = (props) => {
     )
 };
 
-export default Node;
+export default React.memo(Node);

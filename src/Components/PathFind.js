@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useRef} from "react"
 import Node from "./Node"
 import Astar from "../Algorithms/AStar"
 import "./PathFind.css"
 
-const cols = 30;
-const rows = 20;
+const cols = 20;
+const rows = 15;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -19,27 +19,34 @@ const Pathfind = () => {
     const [MouseDown, setMouseDown] = useState(false);
     //const [Algorithm, setAlgorithm] = useState([]);
 
+    // Initialize
+    useEffect(() => {
+        initilizeGrid();
+    }, []);
+    
+    
+    // const mounted = useRef();
+    // useEffect(() => {
+    // if (!mounted.current) {
+    //     // do componentDidMount logic
+    //     mounted.current = true;
+    // } else {
+    //     calculatePath(Grid)
+    //     // do componentDidUpdate logic
+    // }
+    // },[Grid]);
+
+
     const initilizeGrid = () => {
         
         const grid = new Array(rows);
         for (let i = 0; i < rows; i++) {
             grid[i] = new Array(cols);
         }
-        
         createGrid(grid);
         setGrid(grid);
         addNeighbours(grid);
         calculatePath(grid);
-        
-
-        // const startNode = grid[NODE_START_ROW][NODE_START_COL];
-        // const endNode = grid[NODE_END_ROW][NODE_END_COL];
-        // let path = Astar(startNode, endNode);
-        // //diplay
-        // setPath(path.path);
-        // setVisitedNodes(path.visitedNodes);
-
- 
     };
 
 
@@ -55,6 +62,8 @@ const Pathfind = () => {
 
     const mouseUpHandler = (row, col) => {
         setMouseDown(false);
+        neighbourChanged(Grid)
+        calculatePath(Grid)
     };
 
 
@@ -66,19 +75,17 @@ const Pathfind = () => {
           isWall: !spot.isWall,
         };
         newGrid[row][col] = newSpot;
-        calculatePath(newGrid)
         setGrid(newGrid);
     };
 
-   
-    
-
-    // Call first
-    useEffect(() => {
-        initilizeGrid();
-    }, []);
-
-    
+    const neighbourChanged = (grid) => {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                grid[i][j].neighbours = []
+                grid[i][j].addNeighboursSpot(grid)
+            }
+        }
+    }
 
     // Create the spot
     const createGrid = (grid) => {
@@ -93,7 +100,7 @@ const Pathfind = () => {
     const addNeighbours= (grid) => {
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
-                grid[i][j].addNeighbours(grid)
+                grid[i][j].addNeighboursSpot(grid)
             }
         }
     }
@@ -111,7 +118,7 @@ const Pathfind = () => {
         this.neighbours = [];
         this.isWall = false;
         this.previous = undefined;
-        this.addNeighbours = (grid) => {
+        this.addNeighboursSpot = (grid) => {
             let i = this.x;
             let j = this.y;
             if (i>0) this.neighbours.push(grid[i-1][j]);
@@ -169,7 +176,7 @@ const Pathfind = () => {
     }
 
     /* Reset the grid to original state */
-    const resetPath = () => {
+    const resetClearHandler = (choice) => {
         resetTimeOuthandler();
         for (let i = 0; i < VisitedNodes.length; i++) {
             const node = VisitedNodes[i];
@@ -177,7 +184,7 @@ const Pathfind = () => {
             elem.classList.remove("node-shortest-path");
             elem.classList.remove("node-visited");
         }
-        initilizeGrid();
+        if (choice === 'reset') initilizeGrid();
     }
 
     //TODO: Better Approach?
@@ -196,22 +203,24 @@ const Pathfind = () => {
                     elem.classList.remove("is-wall")
                 }
             }
-        }      
+        } 
         calculatePath(Grid)
     }
 
     const visualizePathHandler = () => {
+        console.log(Grid)
+        calculatePath(Grid)
         //document.getElementById("v-btn").disabled = true;
         for (let i = 1; i <= VisitedNodes.length; i++) {
             if (i === VisitedNodes.length) {
                 setTimeout(() => {
                     visualizeShortestPath(Path);
-                 }, 20 * i);
+                 }, 12 * i);
             } else {
                 setTimeout(() => {
                 const node = VisitedNodes[i];
                 if (!node.isEnd) document.getElementById(`node-${node.x}-${node.y}`).className = "node node-visited";
-                 }, 20 * i);
+                 }, 12 * i);
             }
         }
         
@@ -222,7 +231,7 @@ const Pathfind = () => {
             setTimeout(() => {
                 const node = shortestPathNodes[i];
                 document.getElementById(`node-${node.x}-${node.y}`).className = "node node-shortest-path";
-            }, 10 * i);
+            }, 5 * i);
         }
         
     }
@@ -234,8 +243,9 @@ const Pathfind = () => {
             <br></br>
             <div>
                 <button id="v-btn" onClick={visualizePathHandler}>Visualize Path</button>
-                <button onClick={resetPath}>Reset</button>
                 <button onClick={generateRandomWalls}>Generate Walls</button>
+                <button onClick={resetClearHandler.bind(this, "clear")}>Clear Path</button>
+                <button onClick={resetClearHandler.bind(this, "reset")}>Reset</button>
             </div>
             <div className="grid">
                 {gridWithNode}

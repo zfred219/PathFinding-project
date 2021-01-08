@@ -22,6 +22,7 @@ function Astar(startNode, endNode)
         // Get and Pop it out
         let current = openSet[leastIndex];
         openSet = openSet.filter((elt) => elt !== current);
+        // add current to visited
         visitedNodes.push(current);
         
         // Check end
@@ -41,11 +42,12 @@ function Astar(startNode, endNode)
 
         // Get all possible neighbours/successors
         let neighbours = current.neighbours;
+        console.log(neighbours)
         // For each neighbour
         for (let i = 0; i < neighbours.length; i++) {
             let neighbour = neighbours[i];
             // 1) 
-            console.log(neighbour.isWall)
+            // console.log(neighbour.isWall)
             if (!closedSet.includes(neighbour) && !neighbour.isWall) {
                 let tempG = current.g + 1;
                 let newPath = false;
