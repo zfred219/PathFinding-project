@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from "react"
 import Node from "./Node"
 import Astar from "../Algorithms/AStar"
 import "./PathFind.css"
+import Square from "./Square"
 
 const cols = 20;
 const rows = 15;
@@ -91,7 +92,7 @@ const Pathfind = () => {
     const createGrid = (grid) => {
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
-                grid[i][j] = new Spot(i, j);
+                grid[i][j] = new Square(i, j);
             }
         }
     }
@@ -105,28 +106,6 @@ const Pathfind = () => {
         }
     }
     
-    //Spot constructor
-    function Spot(i, j) {
-        this.x = i;
-        this.y = j;
-        this.isStart = this.x === NODE_START_ROW && this.y === NODE_START_COL;
-        this.isEnd = this.x === NODE_END_ROW && this.y === NODE_END_COL;
-        // For A*
-        this.g = 0;
-        this.f = 0;
-        this.h = 0;
-        this.neighbours = [];
-        this.isWall = false;
-        this.previous = undefined;
-        this.addNeighboursSpot = (grid) => {
-            let i = this.x;
-            let j = this.y;
-            if (i>0) this.neighbours.push(grid[i-1][j]);
-            if (i<rows-1) this.neighbours.push(grid[i+1][j]);
-            if (j>0) this.neighbours.push(grid[i][j-1]);
-            if (j<cols-1) this.neighbours.push(grid[i][j+1]);
-        };
-    }
     
 
     //TODO: add algorithm here
