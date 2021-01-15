@@ -11,13 +11,6 @@ const ItemBar = styled.div`
     height: 60px;
     text-decoration: none;
     font-size: 18px;
-
-    &:hover {
-        background: #252831;
-        border-left: 4px solid #632ce4;
-        cursor: pointer;
-    }   
-
 `
 const ItemLabel = styled.span`
     color: white;
