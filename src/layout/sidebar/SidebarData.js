@@ -1,15 +1,17 @@
 import * as AiIcons from 'react-icons/ai'
 import * as GiIcons from 'react-icons/gi'
 import * as CgIcons from 'react-icons/cg'
-import * as GrIcons from 'react-icons/gr'
+import {IoMdRefreshCircle} from 'react-icons/io'
 import * as FaIcons from 'react-icons/fa'
+import * as RiIcons from 'react-icons/ri'
 
 
 const SidebarData = [
     {
         title: 'Algorithms',
         icon: <AiIcons.AiFillCalculator />,
-        hasSubNav: true,
+        onOpenSubMenu: <RiIcons.RiArrowUpSLine />,
+        onCloseSubMenu: <RiIcons.RiArrowDownSLine />,
         subNav: [
             {
                 subTitle: 'A*',
@@ -33,7 +35,8 @@ const SidebarData = [
     {
         title: 'Generate Maze',
         icon: <GiIcons.GiMaze/>,
-        hasSubNav: true,
+        onOpenSubMenu: <RiIcons.RiArrowUpSLine />,
+        onCloseSubMenu: <RiIcons.RiArrowDownSLine />,
         subNav: [
             {
                 subTitle: 'Kruskal\'s Algorithm',
@@ -47,7 +50,7 @@ const SidebarData = [
     },
 
     {
-        title: 'Generate Random Walls',
+        title: 'Generate Walls',
         hasSubNav: false,
         icon: <GiIcons.GiCubes />
     },
@@ -61,7 +64,7 @@ const SidebarData = [
     {
         title: 'Reset',
         hasSubNav: false,
-        icon: <GrIcons.GrPowerReset />
+        icon: <IoMdRefreshCircle />
     }
 ];
 
