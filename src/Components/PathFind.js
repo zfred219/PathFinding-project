@@ -4,6 +4,7 @@ import Astar from "../Algorithms/AStar"
 import "./PathFind.css"
 import Square from "./Square"
 
+// Grid Information
 const cols = 20;
 const rows = 15;
 
