@@ -34,15 +34,11 @@ function Astar(startNode, endNode)
                 path.push(temp.previous);
                 temp = temp.previous
             }
-
-            //console.log(path);
-            //console.log(" Path found!");
             return {path, visitedNodes};
         }
 
         // Get all possible neighbours/successors
         let neighbours = current.neighbours;
-        console.log(neighbours)
         // For each neighbour
         for (let i = 0; i < neighbours.length; i++) {
             let neighbour = neighbours[i];
