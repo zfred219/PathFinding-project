@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react'
+import React, {Fragment} from 'react'
 import styled from 'styled-components'
 import * as FaIcons from 'react-icons/fa'
 import * as AiIcons from 'react-icons/ai'
@@ -7,7 +7,7 @@ import SubMenu from './SubMenu'
 
 const Nav = styled.div`
     background: #15171c;
-    height: 60px;
+    height: 50px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -16,12 +16,11 @@ const Nav = styled.div`
 const NavIcon = styled.a`
     margin-left: 2rem;
     font-size: 2rem;
-    height: 80px;
+    height: 60px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 
-    //TODO: Area too large
     &:hover {
         cursor: pointer;
     }
@@ -36,7 +35,7 @@ const SidebarNav = styled.nav`
     position: fixed;
     top: 0;
     left: ${({ sidebarShow }) => (sidebarShow ? '0' : '-100%')};
-    transition: 350ms;
+    transition: 500ms;
     z-index: 10;
 `;
 
@@ -45,21 +44,18 @@ const SidebarWrap = styled.div`
 `
 
 
-const Sidebar = () => {
-    const [sidebar, setSidebar] = useState(true);
-    const showSidebar = () => setSidebar(!sidebar);
-
+const Sidebar = (props) => {
     return(
         <Fragment>
             <Nav>
                 <NavIcon to='#'>
-                    <FaIcons.FaBars style={{color: "white"}} onClick={showSidebar}/>
+                    <FaIcons.FaBars style={{color: "white"}} onClick={props.handleSidebar}/>
                 </NavIcon>
              </Nav>
-            <SidebarNav sidebarShow={sidebar}>
+            <SidebarNav sidebarShow={props.sidebar}>
                 <SidebarWrap>
                     <NavIcon to='#'>
-                        <AiIcons.AiOutlineClose style={{color: "white"}} onClick={showSidebar}/>
+                        <AiIcons.AiOutlineClose style={{color: "white"}} onClick={props.handleSidebar}/>
                     </NavIcon>
                     {SidebarData.map((item, index)=>{
                         return <SubMenu item={item} index={index} />
