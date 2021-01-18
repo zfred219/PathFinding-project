@@ -1,15 +1,9 @@
 import './App.css';
-import { Fragment } from 'react';
-import Pathfind from './Components/PathFind';
-import Sidebar from './layout/sidebar/Sidebar'
+import MainComponent from './Components/MainComponent'
 
 function App() {
   return (
-    <Fragment>
-        <Sidebar />
-        {/* <Pathfind /> */}
-    </Fragment>
-
+        <MainComponent />
   )
 }
 

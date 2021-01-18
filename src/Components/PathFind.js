@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react"
+import React, {useState, useEffect} from "react"
 import Node from "./Node"
 import Astar from "../Algorithms/AStar"
 import "./PathFind.css"
@@ -14,7 +14,7 @@ const NODE_END_ROW = rows - 1;
 const NODE_END_COL = cols - 1
 
 
-const Pathfind = () => {
+const Pathfind = (props) => {
     const [Grid, setGrid] = useState([]);
     const [Path, setPath] = useState([]);
     const [VisitedNodes, setVisitedNodes] = useState([]);
@@ -218,7 +218,7 @@ const Pathfind = () => {
 
 
     return (
-        <div className="Wrapper">
+        <div className={props.sidebarOn ? "right-wrapper" : "wrapper"}>
             <h1>PathFind Visualization</h1>
             <br></br>
             <div>

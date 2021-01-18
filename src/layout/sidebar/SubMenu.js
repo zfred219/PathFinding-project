@@ -8,15 +8,16 @@ const ItemBar = styled.div`
     align-items: center;
     padding: 20px;
     list-style: none;
-    height: 60px;
+    height: 40px;
     text-decoration: none;
     font-size: 18px;
 
     &:hover {
-        background: #252831;
-        border-left: 4px solid #632ce4;
+        background: #0c7bc4;
         cursor: pointer;
-    }   
+        transform: scale(0.9);
+        border-radius: 8px;
+    }
 
 `
 const ItemLabel = styled.span`
@@ -57,11 +58,12 @@ const SubMenu = (props) => {
                 props.item.onCloseSubMenu : null}
             </div>
         </ItemBar>
+        //TODO: key error
         {subMenuOpen && props.item.subNav.map((item, index) => {
             return (
                 <DropDownItem key={index}>
                     {item.icon}
-                    <ItemLabel>{item.subTitle}</ItemLabel>
+                    <ItemLabel >{item.subTitle}</ItemLabel>
                 </DropDownItem>
             )
         })}
