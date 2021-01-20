@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from "react"
 import Node from "./Node"
-import Astar from "../Algorithms/AStar"
+import Astar from "../algorithms/AStar"
+import BFS from "../algorithms/bfs/BFS"
 import "./PathFind.css"
 import Square from "./Square"
 
 // Grid Information
-const cols = 20;
-const rows = 15;
+const cols = 5;
+const rows = 5;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -65,6 +66,7 @@ const Pathfind = (props) => {
     const mouseUpHandler = (row, col) => {
         setMouseDown(false);
         neighbourChanged(Grid)
+        console.log(Grid)
         calculatePath(Grid)
     };
 
@@ -114,7 +116,9 @@ const Pathfind = (props) => {
     const calculatePath = (grid) => {
         const startNode = grid[NODE_START_ROW][NODE_START_COL];
         const endNode = grid[NODE_END_ROW][NODE_END_COL];
-        let AlgorithmPath = Astar(startNode, endNode);
+        // let AlgorithmPath = Astar(startNode, endNode);
+        let AlgorithmPath = BFS(grid, startNode, endNode);
+        console.log(AlgorithmPath)
         setPath(AlgorithmPath.path);
         setVisitedNodes(AlgorithmPath.visitedNodes);
         return AlgorithmPath

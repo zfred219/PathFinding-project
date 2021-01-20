@@ -1,7 +1,7 @@
 
 // Grid Information
-const cols = 20;
-const rows = 15;
+const cols = 5;
+const rows = 5;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -22,6 +22,7 @@ function Square(i, j) {
     this.neighbours = [];
     this.isWall = false;
     this.previous = undefined;
+    this.BFSvisited = false;
     this.addNeighboursSpot = (grid) => {
         let i = this.x;
         let j = this.y;
