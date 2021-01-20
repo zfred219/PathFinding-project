@@ -1,9 +1,9 @@
 import './App.css';
-import Pathfind from './Components/PathFind';
+import MainComponent from './components/MainComponent'
 
 function App() {
   return (
-    <Pathfind />
+        <MainComponent />
   )
 }
 

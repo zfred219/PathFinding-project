@@ -1,8 +1,17 @@
 
 
-.Wrapper {
+.wrapper {
     max-width: 80%;
     margin:auto;
+    transition: 300ms;
+}
+
+.right-wrapper {
+    max-width: 80%;
+    margin:auto;
+    padding-left: 300px;
+    transition: linear;
+    transition: 550ms;
 }
 
 .rowWrapper {
@@ -17,3 +26,4 @@
 button {
     margin-right: 3%;
 }
+

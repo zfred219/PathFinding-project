@@ -1,10 +1,13 @@
-import React, {useState, useEffect, useRef} from "react"
+import React, {useState, useEffect} from "react"
 import Node from "./Node"
-import Astar from "../Algorithms/AStar"
+import Astar from "../algorithms/AStar"
+import BFS from "../algorithms/bfs/BFS"
 import "./PathFind.css"
+import Square from "./Square"
 
-const cols = 20;
-const rows = 15;
+// Grid Information
+const cols = 5;
+const rows = 5;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -12,7 +15,7 @@ const NODE_END_ROW = rows - 1;
 const NODE_END_COL = cols - 1
 
 
-const Pathfind = () => {
+const Pathfind = (props) => {
     const [Grid, setGrid] = useState([]);
     const [Path, setPath] = useState([]);
     const [VisitedNodes, setVisitedNodes] = useState([]);
@@ -63,6 +66,7 @@ const Pathfind = () => {
     const mouseUpHandler = (row, col) => {
         setMouseDown(false);
         neighbourChanged(Grid)
+        console.log(Grid)
         calculatePath(Grid)
     };
 
@@ -91,7 +95,7 @@ const Pathfind = () => {
     const createGrid = (grid) => {
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
-                grid[i][j] = new Spot(i, j);
+                grid[i][j] = new Square(i, j);
             }
         }
     }
@@ -105,28 +109,6 @@ const Pathfind = () => {
         }
     }
     
-    //Spot constructor
-    function Spot(i, j) {
-        this.x = i;
-        this.y = j;
-        this.isStart = this.x === NODE_START_ROW && this.y === NODE_START_COL;
-        this.isEnd = this.x === NODE_END_ROW && this.y === NODE_END_COL;
-        // For A*
-        this.g = 0;
-        this.f = 0;
-        this.h = 0;
-        this.neighbours = [];
-        this.isWall = false;
-        this.previous = undefined;
-        this.addNeighboursSpot = (grid) => {
-            let i = this.x;
-            let j = this.y;
-            if (i>0) this.neighbours.push(grid[i-1][j]);
-            if (i<rows-1) this.neighbours.push(grid[i+1][j]);
-            if (j>0) this.neighbours.push(grid[i][j-1]);
-            if (j<cols-1) this.neighbours.push(grid[i][j+1]);
-        };
-    }
     
 
     //TODO: add algorithm here
@@ -134,7 +116,9 @@ const Pathfind = () => {
     const calculatePath = (grid) => {
         const startNode = grid[NODE_START_ROW][NODE_START_COL];
         const endNode = grid[NODE_END_ROW][NODE_END_COL];
-        let AlgorithmPath = Astar(startNode, endNode);
+        // let AlgorithmPath = Astar(startNode, endNode);
+        let AlgorithmPath = BFS(grid, startNode, endNode);
+        console.log(AlgorithmPath)
         setPath(AlgorithmPath.path);
         setVisitedNodes(AlgorithmPath.visitedNodes);
         return AlgorithmPath
@@ -238,7 +222,7 @@ const Pathfind = () => {
 
 
     return (
-        <div className="Wrapper">
+        <div className={props.sidebarOn ? "right-wrapper" : "wrapper"}>
             <h1>PathFind Visualization</h1>
             <br></br>
             <div>
