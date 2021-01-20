@@ -43,7 +43,7 @@ function Astar(startNode, endNode)
         for (let i = 0; i < neighbours.length; i++) {
             let neighbour = neighbours[i];
             // 1) 
-            // console.log(neighbour.isWall)
+            // console.log(neighbour.isWall)   //TODO: change includes to array check
             if (!closedSet.includes(neighbour) && !neighbour.isWall) {
                 let tempG = current.g + 1;
                 let newPath = false;

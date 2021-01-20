@@ -49,7 +49,7 @@ const Pathfind = (props) => {
         createGrid(grid);
         setGrid(grid);
         addNeighbours(grid);
-        calculatePath(grid);
+        // calculatePath(grid);
     };
 
 
@@ -66,7 +66,6 @@ const Pathfind = (props) => {
     const mouseUpHandler = (row, col) => {
         setMouseDown(false);
         neighbourChanged(Grid)
-        console.log(Grid)
         calculatePath(Grid)
     };
 
@@ -118,9 +117,10 @@ const Pathfind = (props) => {
         const endNode = grid[NODE_END_ROW][NODE_END_COL];
         // let AlgorithmPath = Astar(startNode, endNode);
         let AlgorithmPath = BFS(grid, startNode, endNode);
-        console.log(AlgorithmPath)
-        setPath(AlgorithmPath.path);
-        setVisitedNodes(AlgorithmPath.visitedNodes);
+        console.log(AlgorithmPath.path)
+
+        //setPath(AlgorithmPath.path);
+        //setVisitedNodes(AlgorithmPath.visitedNodes);
         return AlgorithmPath
     }
 
@@ -192,9 +192,10 @@ const Pathfind = (props) => {
     }
 
     const visualizePathHandler = () => {
-        console.log(Grid)
-        calculatePath(Grid)
-        //document.getElementById("v-btn").disabled = true;
+        let AlgorithmPath = calculatePath(Grid)
+        let VisitedNodes = AlgorithmPath.visitedNodes
+        let Path = AlgorithmPath.path;
+
         for (let i = 1; i <= VisitedNodes.length; i++) {
             if (i === VisitedNodes.length) {
                 setTimeout(() => {

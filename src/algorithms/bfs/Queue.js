@@ -8,7 +8,7 @@ function Queue(){
     this.getLength = () => queue.length - offset
 
     // Check if it's empty
-    this.isEmpty = () => 0 == queue.length;
+    this.isEmpty = () => 0 === queue.length;
 
     // insert into queue at the end
     this.enqueue = (offset) => { 
@@ -17,7 +17,7 @@ function Queue(){
 
     // pop out of queue at the front
     this.dequeue = () => { 
-        if(0 != queue.length) {
+        if(0 !== queue.length) {
             let element = queue[offset];
             if (++offset * 2 >= queue.length){
                 queue  = queue.slice(offset);

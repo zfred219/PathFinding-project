@@ -31,14 +31,12 @@ function BFS(grid, startNode, endNode) {
                 path.push(currNode.previous);
                 currNode = currNode.previous
             }
-            console.log(path)
             return {path, visitedNodes};
         }
 
         for (let i = 0; i < currVisitingNode.neighbours.length; ++i) {
             neighbourCounter++;
             let currNeighborNode = currVisitingNode.neighbours[i];
-            console.log(currNeighborNode);
             if (!currNeighborNode.BFSvisited && !currNeighborNode.isWall) {
                 // For BFS queue
                 BfsQueue.enqueue(currNeighborNode);
@@ -54,6 +52,7 @@ function BFS(grid, startNode, endNode) {
 
         }
     }
+    console.log(visitedNodes)
     console.log("I didn't find it buddy");
 }
 
