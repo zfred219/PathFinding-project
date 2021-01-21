@@ -1,4 +1,4 @@
-function Astar(startNode, endNode) 
+function Astar(grid, startNode, endNode) 
 {
     // Display
     let visitedNodes = [];
@@ -6,7 +6,11 @@ function Astar(startNode, endNode)
     // Prepare
     let path = [];
     let openSet = [];
-    let closedSet = [];
+    for (let r = 0; r < grid.length; r++) {
+        for (let c = 0; c < grid[0].length; c++) {
+            grid[r][c].visited = false;
+        }
+    }
     openSet.push(startNode);
 
 
@@ -24,6 +28,7 @@ function Astar(startNode, endNode)
         openSet = openSet.filter((elt) => elt !== current);
         // add current to visited
         visitedNodes.push(current);
+        current.visited = true;
         
         // Check end
         if(current === endNode) {
@@ -42,9 +47,7 @@ function Astar(startNode, endNode)
         // For each neighbour
         for (let i = 0; i < neighbours.length; i++) {
             let neighbour = neighbours[i];
-            // 1) 
-            // console.log(neighbour.isWall)   //TODO: change includes to array check
-            if (!closedSet.includes(neighbour) && !neighbour.isWall) {
+            if (!neighbour.visited && !neighbour.isWall) {
                 let tempG = current.g + 1;
                 let newPath = false;
                 if (openSet.includes(neighbour)) {
@@ -65,12 +68,11 @@ function Astar(startNode, endNode)
                 }
             }
         } 
-        closedSet.push(current);
     }
     return {path, visitedNodes, error: "No Path Found!"};
 }
 
-// Mahant Dist (TODO: Change to other?)
+// Mahant Dist 
 function heruistic(a, b) {
     let d = Math.abs(a.x - a.y) + Math.abs(b.x - b.y);
     return d;
