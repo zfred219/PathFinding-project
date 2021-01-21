@@ -58,7 +58,7 @@ const Sidebar = (props) => {
                         <AiIcons.AiOutlineClose style={{color: "white"}} onClick={props.handleSidebar}/>
                     </NavIcon>
                     {SidebarData.map((item, index)=>{
-                        return <SubMenu item={item} index={index} />
+                        return <SubMenu item={item} key ={index}/>
                     })}
                 </SidebarWrap>
             </SidebarNav>

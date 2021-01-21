@@ -17,9 +17,13 @@
     background-color: red;
 }
 
+/* .node-visited {
+  background-color: coral;
+} */
+
 .node-visited {
     animation-name: visitedAnimation;
-    animation-duration: 1.5s;
+    animation-duration: 1s;
     animation-timing-function: ease-out;
     animation-delay: 0;
     animation-direction: alternate;

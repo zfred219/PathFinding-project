@@ -1,7 +1,7 @@
 import React from "react"
-import "./Node.css"
+import "./Spot.css"
 
-const Node = (props) => {
+const Spot = (props) => {
     const classes = props.isStart ? "node-start" : props.isWall ? "is-wall" : props.isEnd ? "node-end" : "";
     return (
         <div className = {`node ${classes}`}
@@ -10,9 +10,8 @@ const Node = (props) => {
           onMouseEnter={()=>props.mouseEnter(props.row, props.col)}
           onMouseUp={()=>props.mouseUp(props.row, props.col)}
           >
-
         </div>
     )
 };
 
-export default React.memo(Node);
+export default React.memo(Spot);

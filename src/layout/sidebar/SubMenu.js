@@ -25,10 +25,10 @@ const ItemLabel = styled.span`
     margin-left: 16px;
 `
 
-const  DropDownItem = styled.a`
+const DropDownItem = styled.a`
     background: #414757;
     height: 60px;
-    padding-left: 2rem;
+    padding-left: 1rem;
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -39,15 +39,37 @@ const  DropDownItem = styled.a`
         background: #632ce4;
         cursor: pointer;
     }
+
+    &:active {
+        background: #632ce4;
+        transform: scale(0.9);
+        border-radius: 8px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
 `
 
 const SubMenu = (props) => {
     const [subMenuOpen, SetSubMenuOpen] = useState(false);
     const toggleSubMenuOpen = () => SetSubMenuOpen(!subMenuOpen);
 
+    //TODO: select button
+    const [btnSelected, SetBtnSelected] = useState(false);
+    const toggleBtnSelected = () => {
+        SetSubBtnSelected(!subBtnSelected);
+    } 
+
+    //TODO: select subButton
+    const [subBtnSelected, SetSubBtnSelected] = useState(false);
+    const toggleSubBtnSelected = () => {
+        SetSubBtnSelected(!subBtnSelected);
+        
+    } 
+    let subBtnStyle = subBtnSelected ? {background: "#632ce4"} : null;
+
     return (
         <Fragment>
-        <ItemBar onClick={props.item.subNav && toggleSubMenuOpen}>
+        <ItemBar onClick={(props.item.subNav && toggleSubMenuOpen)} >
             <div>
                 {props.item.icon}
                 <ItemLabel>{props.item.title}</ItemLabel>
@@ -58,10 +80,10 @@ const SubMenu = (props) => {
                 props.item.onCloseSubMenu : null}
             </div>
         </ItemBar>
-        //TODO: key error
+
         {subMenuOpen && props.item.subNav.map((item, index) => {
             return (
-                <DropDownItem key={index}>
+                <DropDownItem key={index} onClick = {toggleSubBtnSelected} style={subBtnStyle} >
                     {item.icon}
                     <ItemLabel >{item.subTitle}</ItemLabel>
                 </DropDownItem>

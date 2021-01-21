@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from "react"
-import Node from "./Node"
-import Astar from "../Algorithms/AStar"
+import Spot from "./Spot"
+import Astar from "../algorithms/AStar"
+import BFS from "../algorithms/bfs/BFS"
 import "./PathFind.css"
 import Square from "./Square"
 
 // Grid Information
-const cols = 20;
+const cols = 25;
 const rows = 15;
 
 const NODE_START_ROW = 0;
@@ -16,16 +17,15 @@ const NODE_END_COL = cols - 1
 
 const Pathfind = (props) => {
     const [Grid, setGrid] = useState([]);
-    const [Path, setPath] = useState([]);
+    // const [Path, setPath] = useState([]);
     const [VisitedNodes, setVisitedNodes] = useState([]);
     const [MouseDown, setMouseDown] = useState(false);
-    //const [Algorithm, setAlgorithm] = useState([]);
+
 
     // Initialize
     useEffect(() => {
         initilizeGrid();
     }, []);
-    
     
     // const mounted = useRef();
     // useEffect(() => {
@@ -48,7 +48,6 @@ const Pathfind = (props) => {
         createGrid(grid);
         setGrid(grid);
         addNeighbours(grid);
-        calculatePath(grid);
     };
 
 
@@ -65,7 +64,6 @@ const Pathfind = (props) => {
     const mouseUpHandler = (row, col) => {
         setMouseDown(false);
         neighbourChanged(Grid)
-        calculatePath(Grid)
     };
 
 
@@ -76,6 +74,7 @@ const Pathfind = (props) => {
           ...spot, // spreading all other props of this spot
           isWall: !spot.isWall,
         };
+        newSpot.addNeighboursSpot(newGrid);
         newGrid[row][col] = newSpot;
         setGrid(newGrid);
     };
@@ -107,18 +106,18 @@ const Pathfind = (props) => {
         }
     }
     
-    
-
-    //TODO: add algorithm here
     /* Calculate path based on currently selected algorithm */
     const calculatePath = (grid) => {
         const startNode = grid[NODE_START_ROW][NODE_START_COL];
         const endNode = grid[NODE_END_ROW][NODE_END_COL];
-        let AlgorithmPath = Astar(startNode, endNode);
-        setPath(AlgorithmPath.path);
-        setVisitedNodes(AlgorithmPath.visitedNodes);
-        return AlgorithmPath
+        // let algorithmPath = Astar(grid, startNode, endNode);
+        let algorithmPath = BFS(grid, startNode, endNode);
+        // if (!algorithmPath) return;
+        setVisitedNodes(algorithmPath.visitedNodes);
+        return algorithmPath
     }
+
+
 
     // Grid with node
     const gridWithNode = (
@@ -129,7 +128,7 @@ const Pathfind = (props) => {
                         {row.map((col, colIndex) => {
                             const {isStart, isEnd, isWall} = col;
                             return (
-                                <Node 
+                                <Spot 
                                 key={colIndex} isStart={isStart}
                                 isEnd={isEnd} row={rowIndex}
                                 col={colIndex} isWall={isWall}
@@ -158,13 +157,15 @@ const Pathfind = (props) => {
     /* Reset the grid to original state */
     const resetClearHandler = (choice) => {
         resetTimeOuthandler();
-        for (let i = 0; i < VisitedNodes.length; i++) {
-            const node = VisitedNodes[i];
-            const elem = document.getElementById(`node-${node.x}-${node.y}`);
-            elem.classList.remove("node-shortest-path");
-            elem.classList.remove("node-visited");
+        for (let r = 0; r < Grid.length; r++) {
+            for (let c = 0; c < Grid[0].length; c++) {
+                const node = Grid[r][c];
+                const elem = document.getElementById(`node-${node.x}-${node.y}`);
+                elem.classList.remove("node-shortest-path");
+                elem.classList.remove("node-visited");
+            }
+            if (choice === 'reset') initilizeGrid();
         }
-        if (choice === 'reset') initilizeGrid();
     }
 
     //TODO: Better Approach?
@@ -184,13 +185,14 @@ const Pathfind = (props) => {
                 }
             }
         } 
-        calculatePath(Grid)
     }
 
     const visualizePathHandler = () => {
-        console.log(Grid)
-        calculatePath(Grid)
-        //document.getElementById("v-btn").disabled = true;
+        let algorithmPath = calculatePath(Grid)
+        // if (!algorithmPath) return; //TODO: pop up message
+        let VisitedNodes = algorithmPath.visitedNodes
+        let Path = algorithmPath.path;
+
         for (let i = 1; i <= VisitedNodes.length; i++) {
             if (i === VisitedNodes.length) {
                 setTimeout(() => {
@@ -216,7 +218,6 @@ const Pathfind = (props) => {
         
     }
 
-
     return (
         <div className={props.sidebarOn ? "right-wrapper" : "wrapper"}>
             <h1>PathFind Visualization</h1>
@@ -233,8 +234,5 @@ const Pathfind = (props) => {
         </div>
     )
 }
-
-
-
 
 export default Pathfind

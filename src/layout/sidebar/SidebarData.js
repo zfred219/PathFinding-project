@@ -15,19 +15,27 @@ const SidebarData = [
         subNav: [
             {
                 subTitle: 'A*',
-                icon: <AiIcons.AiOutlineStar />
+                icon: <AiIcons.AiOutlineStar />,
+                isSubButton: true,
+                id: 1,
             },
             {
                 subTitle: 'Dijkstra',
-                icon: <GiIcons.GiPathDistance />
+                icon: <GiIcons.GiPathDistance />,
+                isSubButton: true,
+                id: 2,
             },
             {
                 subTitle: 'Breath First Search (BFS)',
-                icon: <FaIcons.FaUserFriends />
+                icon: <FaIcons.FaUserFriends />,
+                isSubButton: true,
+                id: 3,
             },
             {
                 subTitle: 'Depth First Search (DFS)',
-                icon: <FaIcons.FaRss />
+                icon: <FaIcons.FaRss />,
+                isSubButton: true,
+                id: 4,
             }
         ]
     },
@@ -40,30 +48,34 @@ const SidebarData = [
         subNav: [
             {
                 subTitle: 'Kruskal\'s Algorithm',
-                icon: <CgIcons.CgMaze />
+                icon: <CgIcons.CgMaze />,
+                isSubButton: true,
+                id: 1,
             },
             {
                 subTitle: 'Prim\'s Algorithm',
-                icon: <GiIcons.GiMazeCornea />
+                icon: <GiIcons.GiMazeCornea />,
+                isSubButton: true,
+                id: 2,
             },
         ]
     },
 
     {
         title: 'Generate Walls',
-        hasSubNav: false,
+        isButton: true,
         icon: <GiIcons.GiCubes />
     },
 
     {
         title: 'Clean Path',
-        hasSubNav: false,
+        isButton: true,
         icon: <AiIcons.AiOutlineClear/>
     },
 
     {
         title: 'Reset',
-        hasSubNav: false,
+        isButton: true,
         icon: <IoMdRefreshCircle />
     }
 ];
