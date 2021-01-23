@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react"
 import Spot from "./Spot"
 import Astar from "../algorithms/AStar"
 import BFS from "../algorithms/bfs/BFS"
+import DFS from "../algorithms/dfs/DFS"
 import "./PathFind.css"
 import Square from "./Square"
 
@@ -111,7 +112,7 @@ const Pathfind = (props) => {
         const startNode = grid[NODE_START_ROW][NODE_START_COL];
         const endNode = grid[NODE_END_ROW][NODE_END_COL];
         // let algorithmPath = Astar(grid, startNode, endNode);
-        let algorithmPath = BFS(grid, startNode, endNode);
+        let algorithmPath = DFS(grid, startNode, endNode);
         // if (!algorithmPath) return;
         setVisitedNodes(algorithmPath.visitedNodes);
         return algorithmPath

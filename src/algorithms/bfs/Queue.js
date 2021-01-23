@@ -1,5 +1,5 @@
 
-/* An helper queue function to help BFS */
+/* A helper queue function to help BFS */
 function Queue(){
     let queue = [];
     let offset = 0;
