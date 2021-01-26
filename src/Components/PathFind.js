@@ -3,12 +3,13 @@ import Spot from "./Spot"
 import Astar from "../algorithms/AStar"
 import BFS from "../algorithms/bfs/BFS"
 import DFS from "../algorithms/dfs/DFS"
+import Dijkstra from '../algorithms/dijkstra/Dijkstra'
 import "./PathFind.css"
 import Square from "./Square"
 
 // Grid Information
-const cols = 25;
-const rows = 15;
+const cols = 5;
+const rows = 5;
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
@@ -41,6 +42,7 @@ const Pathfind = (props) => {
 
 
     const initilizeGrid = () => {
+
         
         const grid = new Array(rows);
         for (let i = 0; i < rows; i++) {
@@ -112,10 +114,11 @@ const Pathfind = (props) => {
         const startNode = grid[NODE_START_ROW][NODE_START_COL];
         const endNode = grid[NODE_END_ROW][NODE_END_COL];
         // let algorithmPath = Astar(grid, startNode, endNode);
-        let algorithmPath = DFS(grid, startNode, endNode);
-        // if (!algorithmPath) return;
+        // let algorithmPath = DFS(grid, startNode, endNode);
+        // let algorithmPath = BFS(grid, startNode, endNode);
+        let algorithmPath = Dijkstra(grid, startNode, endNode);
         setVisitedNodes(algorithmPath.visitedNodes);
-        return algorithmPath
+        return algorithmPath;
     }
 
 
