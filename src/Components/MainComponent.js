@@ -2,7 +2,7 @@ import React, { Fragment, useState }  from "react"
 import Pathfind from './PathFind'
 import Sidebar from '../layout/sidebar/Sidebar'
 
-
+// A parent class that will handle calls between algorithm and sidebar (DJ)
 const MainComponent = () => {
     const [sidebarOn, setSidebarOn] = useState(true);
     const [currAlgorithm, setCurrAlgorithm] = useState("A Star");
