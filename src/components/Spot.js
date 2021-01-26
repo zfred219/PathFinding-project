@@ -1,6 +1,7 @@
 import React from "react"
 import "./Spot.css"
 
+// Single cell
 const Spot = (props) => {
     const classes = props.isStart ? "node-start" : props.isWall ? "is-wall" : props.isEnd ? "node-end" : "";
     return (
