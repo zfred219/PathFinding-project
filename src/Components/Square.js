@@ -10,7 +10,10 @@ const NODE_END_COL = cols - 1
 
 
 // Square function
-function Square(i, j) {
+class Square {
+    
+
+    constructor(i, j) {
     this.x = i;
     this.y = j;
     this.isStart = this.x === NODE_START_ROW && this.y === NODE_START_COL;
@@ -22,6 +25,7 @@ function Square(i, j) {
     this.neighbours = [];
     this.isWall = false;
     this.previous = undefined;
+    this.dist = Number.MAX_VALUE;
     this.visited = false;
     this.addNeighboursSpot = (grid) => {
         let i = this.x;
@@ -31,6 +35,8 @@ function Square(i, j) {
         if (j>0) this.neighbours.push(grid[i][j-1]);
         if (j<cols-1) this.neighbours.push(grid[i][j+1]);
     };
+    }
+    
 }
 
 export default Square;
