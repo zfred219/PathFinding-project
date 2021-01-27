@@ -16,6 +16,7 @@ function Dijkstra(grid, startNode, endNode) {
                 grid[r][c].dist = Number.MAX_VALUE;
                 fringe.add(grid[r][c]); 
             }
+
         }
     }
     startNode.dist = 0;
@@ -24,6 +25,7 @@ function Dijkstra(grid, startNode, endNode) {
     while (!fringe.isEmpty()) {
         const currVisitingNode = fringe.poll();
         console.log(currVisitingNode);
+
         
         visitedNodes.push(currVisitingNode);
 
@@ -47,15 +49,9 @@ function Dijkstra(grid, startNode, endNode) {
                 neighbourNode.previous = currVisitingNode;
 
                 // Reheapify only bubble up
-
                 fringe.getAndBubble(neighbourNode)
-
-
             }
         }
-        
-        
-
 
     }
     return {path, visitedNodes, error: "No Path Found by Dijkstra!"};
