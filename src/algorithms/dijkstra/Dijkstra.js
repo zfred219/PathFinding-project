@@ -8,19 +8,24 @@ function Dijkstra(grid, startNode, endNode) {
     let path = [];
 
     // A priority queue ordered by distance
-    let fringe = new PriorityQueue((node1, node2) => node1.dist - node2.dist);
+    let fringe = new PriorityQueue([], (node1, node2) => node1.dist - node2.dist);
 
     for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[0].length; c++) {
-            grid[r][c].dist = Number.MAX_VALUE;
-            fringe.enq(grid[r][c]); 
+            if (!grid[r][c].isWall) {
+                grid[r][c].dist = Number.MAX_VALUE;
+                fringe.add(grid[r][c]); 
+            }
+
         }
     }
     startNode.dist = 0;
 
 
     while (!fringe.isEmpty()) {
-        const currVisitingNode = fringe.deq();
+        const currVisitingNode = fringe.poll();
+        console.log(currVisitingNode);
+
         
         visitedNodes.push(currVisitingNode);
 
@@ -42,10 +47,12 @@ function Dijkstra(grid, startNode, endNode) {
             if(currVisitingNode.dist + heruistic(currVisitingNode, neighbourNode) < neighbourNode.dist) {
                 neighbourNode.dist = currVisitingNode.dist + heruistic(currVisitingNode, neighbourNode);
                 neighbourNode.previous = currVisitingNode;
+
+                // Reheapify only bubble up
+                fringe.getAndBubble(neighbourNode)
             }
         }
-        console.log(fringe)
-        
+
     }
     return {path, visitedNodes, error: "No Path Found by Dijkstra!"};
 }

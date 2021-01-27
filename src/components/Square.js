@@ -1,7 +1,8 @@
 
 // Grid Information
-const cols = 5;
-const rows = 5;
+const cols = 25;
+const rows = 15;
+
 
 const NODE_START_ROW = 0;
 const NODE_START_COL = 0;
