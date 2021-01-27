@@ -5,26 +5,32 @@ import Sidebar from '../layout/sidebar/Sidebar'
 // A parent class that will handle calls between algorithm and sidebar (DJ)
 const MainComponent = () => {
     const [sidebarOn, setSidebarOn] = useState(true);
-    const [currAlgorithm, setCurrAlgorithm] = useState("A Star");
+    const [currPathFinding, setCurrPathFinding] = useState("A Star");
     const [currMaze, setCurrMaze] = useState("Kruskal");
 
     const handleSidebarOn = () => {
         setSidebarOn(!sidebarOn);
     };
 
-    const algorithmSelectedHandler = () => {
-        setCurrAlgorithm("BFS");
+    const setPathAlgorithmHandler = (algorithm) => {
+        setCurrPathFinding(algorithm);
+        console.log(algorithm)
     };
 
-    const mazeGenerateHandler = () => {
-        setCurrMaze("Prim");
+    const setMazeAlgorithmHandler = (algorithm) => {
+        setCurrMaze(algorithm);
+        console.log(algorithm)
     };
 
     return (
         <Fragment>
-            {/* Pass thing back to parent */}
-            <Sidebar handleSidebar={handleSidebarOn.bind(this)} sidebar={sidebarOn} />
-            <Pathfind sidebarOn={sidebarOn} currAlgorithm={currAlgorithm} currMaze={currMaze} />
+            <Sidebar    handleSidebar={handleSidebarOn.bind(this)}
+                        sidebar={sidebarOn} 
+                        setMazeAlgorithm={setMazeAlgorithmHandler} 
+                        setPathAlgorithm={setPathAlgorithmHandler} />
+            <Pathfind   sidebarOn={sidebarOn} 
+                        currPathFinding={currPathFinding}
+                        currMaze={currMaze} />
         </Fragment>
     )
 };

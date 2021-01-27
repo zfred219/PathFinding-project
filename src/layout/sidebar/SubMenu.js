@@ -53,19 +53,35 @@ const SubMenu = (props) => {
     const [subMenuOpen, SetSubMenuOpen] = useState(false);
     const toggleSubMenuOpen = () => SetSubMenuOpen(!subMenuOpen);
 
-    //TODO: select button
-    const [btnSelected, SetBtnSelected] = useState(false);
-    const toggleBtnSelected = () => {
-        SetSubBtnSelected(!subBtnSelected);
-    } 
 
-    //TODO: select subButton
-    const [subBtnSelected, SetSubBtnSelected] = useState(false);
-    const toggleSubBtnSelected = () => {
-        SetSubBtnSelected(!subBtnSelected);
-        
+
+
+    // Handle which maze user clicked and pass information to parent
+    const algorithmBtnHandler = (event) => {
+        const algorithmChoice = event.target.closest('a').childNodes[1].textContent;
+        switch(algorithmChoice) {
+            case "Kruskal's Algorithm":
+                props.setMazeAlgorithm('Kruskal');
+              break;
+            case "Prim's Algorithm":
+                props.setMazeAlgorithm('Prim');
+              break;
+            case "A*":
+                props.setPathAlgorithm('A*');
+              break;
+            case "Dijkstra":
+                props.setPathAlgorithm('Dijkstra');
+              break;
+            case "Breath First Search (BFS)":
+                props.setPathAlgorithm('BFS');
+              break;
+            case "Depth First Search (DFS)":
+                props.setPathAlgorithm('DFS');
+              break;
+            default:
+                console.log("Bad Choice")
+          }
     } 
-    let subBtnStyle = subBtnSelected ? {background: "#632ce4"} : null;
 
     return (
         <Fragment>
@@ -83,12 +99,13 @@ const SubMenu = (props) => {
 
         {subMenuOpen && props.item.subNav.map((item, index) => {
             return (
-                <DropDownItem key={index} onClick = {toggleSubBtnSelected} style={subBtnStyle} >
+                <DropDownItem key={index} onClick={algorithmBtnHandler} >
                     {item.icon}
-                    <ItemLabel >{item.subTitle}</ItemLabel>
+                    <ItemLabel>{item.subTitle}</ItemLabel>
                 </DropDownItem>
             )
-        })}
+        }, this)}
+        
         </Fragment>
     )
 
