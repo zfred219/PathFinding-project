@@ -87,12 +87,6 @@ class PriorityQueue {
 
         data[pos] = item;
     }
-
-
-    
-
-
-
 }
 
 function defaultCompare(a, b) {

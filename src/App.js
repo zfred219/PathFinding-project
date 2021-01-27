@@ -6,5 +6,4 @@ function App() {
         <MainComponent />
   )
 }
-
 export default App;
