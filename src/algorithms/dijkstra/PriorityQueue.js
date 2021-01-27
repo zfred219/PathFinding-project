@@ -44,7 +44,7 @@ class PriorityQueue {
 
     getAndBubble(item) {
         for (let i = 0; i < this.length; ++i) {
-            if (item == this.data[i]) {
+            if (item === this.data[i]) {
                 this.bubbleUp(i)
                 this.bubbleDown(i);
                 return;
