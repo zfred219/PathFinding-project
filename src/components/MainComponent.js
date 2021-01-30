@@ -1,4 +1,4 @@
-import React, { Fragment, useState }  from "react"
+import React, { Fragment, useState, useRef }  from "react"
 import Pathfind from './PathFind'
 import Sidebar from '../layout/sidebar/Sidebar'
 
@@ -7,6 +7,7 @@ const MainComponent = () => {
     const [sidebarOn, setSidebarOn] = useState(true);
     const [currPathFinding, setCurrPathFinding] = useState("A Star");
     const [currMaze, setCurrMaze] = useState("Kruskal");
+    const pathFindRef = useRef();
 
     const handleSidebarOn = () => {
         setSidebarOn(!sidebarOn);
@@ -23,7 +24,8 @@ const MainComponent = () => {
     };
 
     const buttonSelectHandler = (btnChoice) => {
-        console.log(btnChoice)
+        pathFindRef.current.dispatchFunctionBtn(btnChoice);
+        console.log(btnChoice);
         
     }
 
@@ -35,7 +37,8 @@ const MainComponent = () => {
                         setPathAlgorithm={setPathAlgorithmHandler}
                         buttonSelected={buttonSelectHandler}
                         />
-            <Pathfind   sidebarOn={sidebarOn} 
+            <Pathfind   ref={pathFindRef}
+                        sidebarOn={sidebarOn} 
                         currPathFinding={currPathFinding}
                         currMaze={currMaze} 
                         />

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, forwardRef, useImperativeHandle} from "react"
 import Spot from "./Spot"
 import Astar from "../algorithms/AStar"
 import BFS from "../algorithms/bfs/BFS"
@@ -18,7 +18,8 @@ const NODE_END_ROW = rows - 1;
 const NODE_END_COL = cols - 1
 
 
-const Pathfind = (props) => {
+const Pathfind = forwardRef((props, ref) => { 
+    // ref must be palce after props
     const [Grid, setGrid] = useState([]);
     // const [Path, setPath] = useState([]);
     const [VisitedNodes, setVisitedNodes] = useState([]);
@@ -41,10 +42,33 @@ const Pathfind = (props) => {
     // }
     // },[Grid]);
 
+    React.useImperativeHandle(
+        ref,
+        () => ({
+            dispatchFunctionBtn(btnChoice) {
+                switch (btnChoice) {
+                    case 'Walls':
+                        generateRandomWalls();
+                        break;
+                    case 'Clean':
+                        resetClearHandler("clear")
+                        break;
+                    case 'Reset':
+                        resetClearHandler("reset")
+                        break;
+                    default:
+                        break;
+                }
+            },
+
+            dispatchPathAlgorithm(pathAlgorithm) {
+
+            }
+        }),
+    )
+
 
     const initilizeGrid = () => {
-
-        
         const grid = new Array(rows);
         for (let i = 0; i < rows; i++) {
             grid[i] = new Array(cols);
@@ -82,6 +106,13 @@ const Pathfind = (props) => {
         newGrid[row][col] = newSpot;
         setGrid(newGrid);
     };
+
+
+
+    
+
+
+                       
 
     const neighbourChanged = (grid) => {
         for (let i = 0; i < rows; i++) {
@@ -238,6 +269,6 @@ const Pathfind = (props) => {
             </div>
         </div>
     )
-}
+});
 
 export default Pathfind
