@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from 'react'
 import styled from 'styled-components'
 
-const ItemBar = styled.div`
+const ItemBar = styled.a`
     display: flex;
     color: #e1e9fc;
     justify-content: space-between;
@@ -24,6 +24,8 @@ const ItemLabel = styled.span`
     color: white;
     margin-left: 16px;
 `
+
+const Item = styled.a``
 
 const DropDownItem = styled.a`
     background: #414757;
@@ -79,17 +81,33 @@ const SubMenu = (props) => {
                 props.setPathAlgorithm('DFS');
               break;
             default:
-                console.log("Bad Choice")
+                console.log("Bad Alogrithm Choice")
+          }
+    } 
+
+    const functionBtnChoose = (event) => {
+        const btnChoice = event.target.closest('a').childNodes[1].textContent;
+        switch(btnChoice) {
+            case "Generate Walls":
+                props.buttonSelected('Walls');
+              break;
+            case "Clean Path":
+                props.buttonSelected('Clean');
+              break;
+            case "Reset":
+                props.buttonSelected('Reset');
+              break;
+            default:
+                console.log("Bad Button Choice")
           }
     } 
 
     return (
         <Fragment>
-        <ItemBar onClick={(props.item.subNav && toggleSubMenuOpen)} >
-            <div>
+        <ItemBar onClick={(props.item.subNav && toggleSubMenuOpen) 
+                            || (!props.item.subNav && functionBtnChoose)} >
                 {props.item.icon}
                 <ItemLabel>{props.item.title}</ItemLabel>
-            </div>
             <div>
                 {props.item.subNav && subMenuOpen ? 
                 props.item.onOpenSubMenu : props.item.subNav ?
