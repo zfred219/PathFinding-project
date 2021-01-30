@@ -24,9 +24,6 @@ function Dijkstra(grid, startNode, endNode) {
 
     while (!fringe.isEmpty()) {
         const currVisitingNode = fringe.poll();
-        console.log(currVisitingNode);
-
-        
         visitedNodes.push(currVisitingNode);
 
         // Check path find

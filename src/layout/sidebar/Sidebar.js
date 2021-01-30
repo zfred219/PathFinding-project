@@ -61,7 +61,9 @@ const Sidebar = (props) => {
                         return <SubMenu item={item} 
                                 key ={index}
                                 setPathAlgorithm={(algorithm) => props.setPathAlgorithm(algorithm)} 
-                                setMazeAlgorithm={(algorithm) => props.setMazeAlgorithm(algorithm)}/>
+                                setMazeAlgorithm={(algorithm) => props.setMazeAlgorithm(algorithm)}
+                                buttonSelected={(choice) => props.buttonSelected(choice)}
+                                />
                     })}
                 </SidebarWrap>
             </SidebarNav>

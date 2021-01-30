@@ -22,15 +22,23 @@ const MainComponent = () => {
         console.log(algorithm)
     };
 
+    const buttonSelectHandler = (btnChoice) => {
+        console.log(btnChoice)
+        
+    }
+
     return (
         <Fragment>
             <Sidebar    handleSidebar={handleSidebarOn.bind(this)}
                         sidebar={sidebarOn} 
                         setMazeAlgorithm={setMazeAlgorithmHandler} 
-                        setPathAlgorithm={setPathAlgorithmHandler} />
+                        setPathAlgorithm={setPathAlgorithmHandler}
+                        buttonSelected={buttonSelectHandler}
+                        />
             <Pathfind   sidebarOn={sidebarOn} 
                         currPathFinding={currPathFinding}
-                        currMaze={currMaze} />
+                        currMaze={currMaze} 
+                        />
         </Fragment>
     )
 };
