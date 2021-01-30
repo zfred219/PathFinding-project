@@ -1,4 +1,4 @@
-import React, {useState, useEffect, forwardRef, useImperativeHandle} from "react"
+import React, {useState, useEffect, forwardRef} from "react"
 import Spot from "./Spot"
 import Astar from "../algorithms/AStar"
 import BFS from "../algorithms/bfs/BFS"
@@ -51,10 +51,10 @@ const Pathfind = forwardRef((props, ref) => {
                         generateRandomWalls();
                         break;
                     case 'Clean':
-                        resetClearHandler("clear")
+                        resetClearHandler("clear");
                         break;
                     case 'Reset':
-                        resetClearHandler("reset")
+                        resetClearHandler("reset");
                         break;
                     default:
                         break;
